@@ -11,7 +11,6 @@ const meta: Meta<typeof AtButton> = {
   argTypes: {
     label: { control: 'text' },
     variant: objectValuesToControls(AT_BUTTON_VARIANT),
-    onClick: { action: 'clicked' },
   },
 }
 export default meta

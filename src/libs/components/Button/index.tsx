@@ -1,4 +1,6 @@
-import { ButtonHTMLAttributes } from 'react'
+"use client"
+import {ElementRef, useRef} from 'react'
+import {AriaButtonProps, useButton} from 'react-aria'
 
 export const AT_BUTTON_VARIANT = {
   PRIMARY: 'primary',
@@ -13,19 +15,23 @@ export const variantClasses: Record<AtButtonVariant, string> = {
   TERTIARY: 'bg-red-200 hover:bg-red-400 active:bg-red-500',
 }
 
-export interface AtButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+export interface AtButtonProps extends AriaButtonProps {
   label: string
   variant?: AtButtonVariant
-  isDisabled?: boolean
 }
 
-export const AtButton = ({ label, variant = 'PRIMARY', isDisabled = false, onClick }: AtButtonProps) => {
+export const AtButton = (props: AtButtonProps) => {
+  const { label, variant = 'PRIMARY' } = props
+  const ref = useRef<ElementRef<'button'>>(null);
+  const { buttonProps } = useButton(props, ref);
+
   return (
     <button
+      ref={ref}
+      {...buttonProps}
       className={`transition-colors px-6 py-2 rounded-md ${variantClasses[variant]} ${
-        isDisabled ? 'bg-gray-300 text-slate-600 cursor-not-allowed pointer-events-none' : ''
+        buttonProps.disabled ? 'bg-gray-300 text-slate-600 cursor-not-allowed pointer-events-none' : ''
       }`}
-      onClick={isDisabled ? onClick : undefined}
     >
       {label}
     </button>
